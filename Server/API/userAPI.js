@@ -29,8 +29,29 @@ catch (error){
 
 app.get("/all", async (request, response) => {
     try {
-        const fetchUsers = await userModal.find({})
-        response.send(fetchUsers);
+       userModal.aggregate([
+        {
+          $lookup: {
+            from: 'roles',
+            localField: 'role',
+            foreignField: '_id',
+            as: 'userRole',
+          },
+        },
+        {
+          $unwind: '$userRole',
+        },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            email: 1,
+            password: 1,
+            mobile: 1,
+            role: '$userRole.role',
+          },
+        }
+          ]).exec().then(resp=>response.send(resp)).catch(err=>response.send(err))
     }
     catch (error) {
         console.log("Error Occured in User API")
