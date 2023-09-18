@@ -90,6 +90,22 @@ app.post("/new", async (request, response) => {
         console.log("Error Ocurred in the post API user" ,error)
         response.send("Error Occured in posting user")
     }
-})
+});
+
+app.post("/delete",async (request, response)=>{
+const {email} =request.body;
+try{
+const responseData = userModal.deleteOne({ email }).catch(err=>console.log(err))
+if(responseData.deleteCount>0){
+  response.send("User Deleted Successfully");
+}
+else{
+  response.send("Error occured");
+}
+}
+catch(err){
+  response.send("Error occured eleting user");
+};
+});
 
 module.exports = app;

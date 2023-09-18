@@ -6,13 +6,18 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { fetchRoleHook } from '../hooks/roleHook';
-import { fetchUserHook, fetchUsers } from '../hooks/userHook';
+import { fetchUserHook, fetchUsers,fetchDelete } from '../hooks/userHook';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import toast, { Toaster } from 'react-hot-toast';
 
 function User() {
     const [user,setUser] = useState([])
     const [show, setShow] = useState(false);
     const [newUserData, setUserData] = useState({ name: "", email: "", mobile: 0, role: 0,password:"" })
     const [roleData, setRoleData] = useState("Intial")
+    const [search,setSearch] = useState("")
+    const [searchData , setSearchData]=useState([])
+    const [backButton,setBackButton] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setShow(true)
@@ -20,27 +25,53 @@ function User() {
 
 useEffect(()=>{
 fetchUsers().then(resp=>setUser(resp.data)).catch(err=>console.log("Error occured while fetching user",err))
-},[show])
+},[show,user])
 
     const handleNewUser = (event) => {
-        console.log("Data saved", newUserData)
-        fetchUserHook(newUserData).then(res=>console.log("response",res)).catch(err=>console.log("error Occured while posting",err))
+        fetchUserHook(newUserData).catch(err=>console.log("error Occured while posting",err))
         setUserData({ name: "", email: "", mobile: 0, role: "",password:"" })
-        fetchUsers().then(resp=>setUser(resp.data)).catch(err=>console.log("Error occured while fetching user",err))
-        setShow(false)
+        fetchUsers(event).then(resp=>{setUser(resp.data);toast.success("Successfully created user!")}).catch(err=>console.log("Error occured while fetching user",err))
+        setShow(false);
     }
 
     const handleFetchRole = () => {
         const data = fetchRoleHook().then(res => setRoleData(res.data)).catch(err => console.log("Error occured while fetching role data", err));
         return;
     }
+
+    const handleDelete = async (item,index,event)=>{
+        await fetchDelete({email : item.email});
+        debugger;
+       const myPromise =  fetchUsers().then(resp=>setUser(resp.data)).catch(err=>console.log("Error occured while fetching user",err));
+       toast.promise(myPromise, {
+        loading: 'Loading',
+        success: 'Deleted successfully!',
+        error: 'Error when fetching',
+      });
+    }
+
+    const handleSearch =()=>{
+        const searchData = user.filter((item,index)=> item.email.startsWith(search));
+        setSearchData(searchData);
+        setBackButton(true);
+    }
+
+    const handleBack=(event)=>{
+        setSearch("")
+        setBackButton(false)
+    }
     return (
         <div className='mt-4'>
-            <div className='d-flex justify-content-around' >
+            <div className='d-flex' style={{marginLeft : '10%'}}>
                 <div>
-                    <h5>User List</h5>
+                    <h5 style={{color : '#2db1bf',marginTop :3}}>User List</h5>
                 </div>
-                <Button style={{ border: '2px solid #36c6d5', backgroundColor: 'white', color: 'black' }} onClick={(e) => { handleShow(e); handleFetchRole(e) }} size='sm'>
+                <Toaster />
+                {backButton ? <ArrowBackIcon style={{marginLeft : '18%',cursor :'pointer',marginTop :3,fontSize:28}} onClick={(event)=>handleBack(event)}/> : <div style={{marginLeft : '20%'}}></div>}
+                <div className='d-flex'>
+                    <input type="text" className='form-control' placeholder="Search email" style={{marginLeft : '16%',width : 237}} value={search} onChange={(event)=>setSearch(event.target.value)}></input> <button className="btn" style={{border : '1px solid #e5e8eb',marginLeft : '2%'}} onClick={()=>handleSearch()}>Search</button>
+                </div>
+                <Button style={{ border: '2px solid #36c6d5', backgroundColor: 'white', color: 'black',marginLeft : '20%' }} onClick={(e) => { handleShow(e); handleFetchRole(e) }} size='sm'>
                     <AddIcon style={{ color: '#36c6d5' }} /> Add User
                 </Button>
             </div>
@@ -119,6 +150,7 @@ fetchUsers().then(resp=>setUser(resp.data)).catch(err=>console.log("Error occure
                             <th>Action</th>
                         </tr>
                     </thead>
+                    {!backButton ?
                     <tbody>
                         {
                             user!==[] ? user.map((item, index) => {
@@ -131,12 +163,31 @@ fetchUsers().then(resp=>setUser(resp.data)).catch(err=>console.log("Error occure
                                         <td>{item.role}</td>
                                         <td>
                                             <EditIcon style={{ color: '#36c6d5', marginRight: 13, cursor: 'pointer' }} />
-                                            <DeleteIcon style={{ color: '#fb7070', cursor: 'pointer' }} /></td>
+                                            <DeleteIcon style={{ color: '#fb7070', cursor: 'pointer' }} onClick={(event)=>handleDelete(item,index,event)}/></td>
                                     </tr>
                                 )
                             })
                         :"Loading..." }
                     </tbody>
+                    :
+                    <tbody>
+                        {
+                            searchData!==[] ? searchData.map((item, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{index + 1}.</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.email}</td>
+                                        <td>{item.mobile}</td>
+                                        <td>{item.role}</td>
+                                        <td>
+                                            <EditIcon style={{ color: '#36c6d5', marginRight: 13, cursor: 'pointer' }} />
+                                            <DeleteIcon style={{ color: '#fb7070', cursor: 'pointer' }} onClick={(event)=>handleDelete(item,index,event)}/></td>
+                                    </tr>
+                                )
+                            })
+                        :"Loading..." }
+                    </tbody>}
                 </Table>
             </Container>
         </div>
