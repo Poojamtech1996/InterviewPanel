@@ -10,12 +10,13 @@ import Technology from './Component/Technology';
 import QA from './Component/QA';
 import Role from './Component/Role';
 import User from './Component/User';
-
+import Login from './login';
 function App() {
   return (
     <BrowserRouter>
     <Routes>
-    <Route path="/" element={<Navbar />}>
+      <Route path='/' element={<Login/>}/>
+      <Route path="/dashboard" element={<Navbar />}>
       <Route path ="home" element={<Home/>} />
       <Route path="contact" element={<Contact/>} />
       <Route path="technology" element={<Technology/>} />

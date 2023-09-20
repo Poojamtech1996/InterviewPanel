@@ -11,3 +11,6 @@ export const fetchUserHook = (data)=>{
 export const fetchDelete = (data)=>{
     return fetchPost(`${endpoints.user}/delete`,data)
 }
+export const fetchLogin = (data)=>{
+    return fetchPost(`${endpoints.user}/login`,data)
+}

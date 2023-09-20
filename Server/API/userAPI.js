@@ -13,10 +13,8 @@ try{
           return response.send("Login failed")
         }
         if (result) {
-          console.log('Password is correct');
           response.send("Login successfull")
         } else {
-          console.log('Password is incorrect');
           response.send("Login failed")
         }
       });
