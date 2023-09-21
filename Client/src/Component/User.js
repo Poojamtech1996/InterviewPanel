@@ -11,6 +11,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import toast, { Toaster } from 'react-hot-toast';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { useSelector, useDispatch } from 'react-redux';
 
 function User() {
     const [data,setData] = useState([])
@@ -24,6 +25,8 @@ function User() {
     const [paginationPages ,setPaginationPages] = useState(1)
     const [currentPage , setCurrentPage] = useState("1")
     const [currentIndex,setCurrentIndex] = useState([1,2,3,4,5]);
+    const userData = useSelector((state)=>state.userValue);
+    console.log("USer in user",userData)
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setShow(true)

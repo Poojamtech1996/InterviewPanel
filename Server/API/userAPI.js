@@ -2,20 +2,22 @@ const express = require("express");
 const bcrypt = require('bcrypt');
 const app = express();
 const userModal = require("../Modal/UserModal");
+const roleModal = require("../Modal/RoleModal");
 
 app.post("/login",async(request,response)=>{
 try{
     const {email,password} = request.body;
     const fetchUser = await userModal.find({email})
-    bcrypt.compare(password, fetchUser[0].password, (err, result) => {
+    bcrypt.compare(password, fetchUser[0].password, async (err, result) => {
         if (err) {
           console.error('Error comparing passwords:', err);
           return response.send("Login failed")
         }
         if (result) {
-          response.send("Login successfull")
+          const roleData = await roleModal.find({_id : fetchUser[0].role});
+          response.send({status :200, text :"Login Successfull"  ,data : fetchUser , role : roleData})
         } else {
-          response.send("Login failed")
+          response.send({status : 404, text : "Login Failed"})
         }
       });
 }

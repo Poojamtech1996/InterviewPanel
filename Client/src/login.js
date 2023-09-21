@@ -14,11 +14,17 @@ import "./common/global.css";
 import TextField from '@mui/material/TextField';
 import { fetchLogin } from "./hooks/userHook";
 import toast, { Toaster } from 'react-hot-toast';
+import { useSelector, useDispatch } from 'react-redux'
+import { userInfo } from "./redux/loginRedux";
 
 const defaultTheme = createTheme();
+
 export default function Login(){
+
 const [email,setEmail] = useState("")
 const [password,setPassword] = useState("")
+const user = useSelector((state) => state.userValue);
+const dispatch = useDispatch()
 const navigate = useNavigate()
 
 const handleSubmit=(event)=>{
@@ -29,14 +35,24 @@ const handleSubmit=(event)=>{
     }
     fetchLogin(data).then(res=>
         {
-        if(res.data==="Login successfull"){
+        if(res.data.text==="Login Successfull"){
             toast.success("Login Successfull!")
+            const {name, email , mobile} = res.data.data[0];
+            const role = res.data.role[0].role;
+            const reduxData = {
+              login : true,
+              name ,
+              email,
+              mobile,
+              role
+            }
+            dispatch(userInfo(reduxData));
             setTimeout(()=>{
                 navigate("/dashboard")
             },1500)
         }
         else{
-            toast.error("Login Successfull!")
+            toast.error("Login Failed!")
         }
         }
     ).catch(err=>console.log("Error Occured while login in",err));
