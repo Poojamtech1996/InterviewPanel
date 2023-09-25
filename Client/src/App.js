@@ -11,22 +11,26 @@ import QA from './Component/QA';
 import Role from './Component/Role';
 import User from './Component/User';
 import Login from './login';
+import { PrivateRoute } from './common/privateRoute';
+
 
 function App() {
+
+  const isAuthenticated = true;
+
   return (
     <BrowserRouter>
     <Routes>
       <Route path='/' element={<Login/>}/>
-      <Route path="/dashboard" element={<Navbar />}>
-      <Route path ="home" element={<Home/>} />
-      <Route path="contact" element={<Contact/>} />
-      <Route path="technology" element={<Technology/>} />
-      <Route path="qa" element={<QA/>} />
-      <Route path="role" element={<Role/>} />
-      <Route path="user" element={<User/>} />
-      <Route path="career" element={<Career/>} />
-      <Route path="about" element={<About/>} />
-      </Route>
+      <Route path="/dashboard" element = {<PrivateRoute><Navbar/></PrivateRoute>}></Route>
+      <Route path="/dashboard/home" element = {<PrivateRoute><Navbar/><Home/></PrivateRoute>}></Route>
+      <Route path="/dashboard/contact" element = {<PrivateRoute><Navbar/><Contact/></PrivateRoute>}></Route>
+      <Route path="/dashboard/technology" element = {<PrivateRoute><Navbar/><Technology/></PrivateRoute>}></Route>
+      <Route path="/dashboard/qa" element = {<PrivateRoute><Navbar/><QA/></PrivateRoute>}></Route>
+      <Route path="/dashboard/role" element = {<PrivateRoute><Navbar/><Role/></PrivateRoute>}></Route>
+      <Route path="/dashboard/user" element = {<PrivateRoute><Navbar/><User/></PrivateRoute>}></Route>
+      <Route path="/dashboard/career" element = {<PrivateRoute><Navbar/><Career/></PrivateRoute>}></Route>
+      <Route path="/dashboard/about" element = {<PrivateRoute><Navbar/><About/></PrivateRoute>}></Route>
     </Routes>
     </BrowserRouter>
   );

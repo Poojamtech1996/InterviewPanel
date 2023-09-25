@@ -37,6 +37,7 @@ const handleSubmit=(event)=>{
         {
         if(res.data.text==="Login Successfull"){
             toast.success("Login Successfull!")
+            window.localStorage.setItem("login",true);
             const {name, email , mobile} = res.data.data[0];
             const role = res.data.role[0].role;
             const reduxData = {
@@ -52,6 +53,7 @@ const handleSubmit=(event)=>{
             },1500)
         }
         else{
+          window.localStorage.setItem("login",false);
             toast.error("Login Failed!")
         }
         }

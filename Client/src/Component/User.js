@@ -26,7 +26,6 @@ function User() {
     const [currentPage , setCurrentPage] = useState("1")
     const [currentIndex,setCurrentIndex] = useState([1,2,3,4,5]);
     const userData = useSelector((state)=>state.userValue);
-    console.log("USer in user",userData)
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setShow(true)

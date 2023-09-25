@@ -17,8 +17,8 @@ function QA() {
             <div>
                 <Row style={{ marginTop: '5px' }}>
                     <Col xs={6} className="mx-auto">
-                        <label class="form-label">Answer</label>
-                        <textarea style={{ width: 800 }} placeholder="Enter Answer" class="form-control" rows="8"></textarea>
+                        <label className="form-label">Answer</label>
+                        <textarea style={{ width: 800 }} placeholder="Enter Answer" className="form-control" rows="8"></textarea>
                     </Col>
                 </Row>
             </div>

@@ -12,6 +12,7 @@ function Navbar() {
   const handleLogout= (event)=>{
     toast.success("Successfully Logged Out!")
     dispatch(userLogout())
+    window.localStorage.setItem("login",false);
     setTimeout(()=>{
       navigate("/");
     },1850);
@@ -19,34 +20,36 @@ function Navbar() {
   return (
     <>
     <Toaster/>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          < Link class="navbar-brand" to="/">INTERVIEW Q/A</Link>
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <Link class="nav-link active" to="home">Home</Link>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          < Link className="navbar-brand" onClick={()=>navigate("/dashboard")}>INTERVIEW Q/A</Link>
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <button className="nav-link active" onClick={()=>navigate("/dashboard/home")}>Home</button>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="about">About</Link>
+            <li className="nav-item">
+              <button className="nav-link" onClick={()=>navigate("/dashboard/about")}>About</button>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="technology">Technology</Link>
+            <li className="nav-item">
+              <button className="nav-link" onClick={()=>navigate("/dashboard/technology")}>Technology</button>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="qa">Q/A</Link>
+            <li className="nav-item">
+              <button className="nav-link" onClick={()=>navigate("/dashboard/qa")}>Q/A</button>
             </li>
-            {userData.role==="Super Admin" || userData.role==="Admin" ? <>
-            <li class="nav-item">
-              <Link class="nav-link" to="role">Role</Link>
+            {/* {userData.role==="Super Admin" || userData.role==="Admin" ? 
+            <> */}
+            <li className="nav-item">
+              <button className="nav-link" onClick={()=>navigate("/dashboard/role")}>Role</button>
             </li> 
-            <li class="nav-item">
-              <Link class="nav-link" to="user">User</Link>
-            </li></> : null }
-            <li class="nav-item">
-              <Link class="nav-link" to="career">Career</Link>
+            <li className="nav-item">
+              <button className="nav-link" onClick={()=>navigate("/dashboard/user")}>User</button>
             </li>
-            <li class="nav-item">
-              <Link class="nav-link" to="contact">Contact</Link>
+            {/* </> : null } */}
+            <li className="nav-item">
+              <button className="nav-link" to="career">Career</button>
+            </li>
+            <li className="nav-item">
+              <button className="nav-link" to="contact">Contact</button>
             </li>
           </ul>
           <Button onClick={(event)=>handleLogout(event)} style={{fontWeight : 600}}>LogOut</Button>
