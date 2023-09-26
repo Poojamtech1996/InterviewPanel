@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { userLogout } from './redux/loginRedux';
 function Navbar() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [login,setLogin] = useState(false)
   const userData = useSelector((state)=>state.userValue);
   const handleLogout= (event)=>{
     toast.success("Successfully Logged Out!")
@@ -17,6 +18,11 @@ function Navbar() {
       navigate("/");
     },1850);
   }
+  useEffect(()=>{
+    const result = userData.login
+    console.log("Hit",result,userData)
+    setLogin(result)
+  },[userData,window.localStorage.getItem("login"),login])
   return (
     <>
     <Toaster/>
@@ -36,15 +42,15 @@ function Navbar() {
             <li className="nav-item">
               <button className="nav-link" onClick={()=>navigate("/dashboard/qa")}>Q/A</button>
             </li>
-            {/* {userData.role==="Super Admin" || userData.role==="Admin" ? 
-            <> */}
+            {userData.role==="Super Admin" || userData.role==="Admin" ? 
+            <>
             <li className="nav-item">
               <button className="nav-link" onClick={()=>navigate("/dashboard/role")}>Role</button>
             </li> 
             <li className="nav-item">
               <button className="nav-link" onClick={()=>navigate("/dashboard/user")}>User</button>
             </li>
-            {/* </> : null } */}
+            </> : null }
             <li className="nav-item">
               <button className="nav-link" to="career">Career</button>
             </li>
@@ -52,7 +58,7 @@ function Navbar() {
               <button className="nav-link" to="contact">Contact</button>
             </li>
           </ul>
-          <Button onClick={(event)=>handleLogout(event)} style={{fontWeight : 600}}>LogOut</Button>
+          {login===true ? <Button onClick={(event)=>handleLogout(event)} style={{fontWeight : 600}}>LogOut</Button> :<Button onClick={(event)=>navigate("/login")} style={{fontWeight : 600}}>Login</Button> }
         </div>
       </nav>
       <Outlet />

@@ -49,7 +49,7 @@ const handleSubmit=(event)=>{
             }
             dispatch(userInfo(reduxData));
             setTimeout(()=>{
-                navigate("/dashboard")
+                navigate("/")
             },1500)
         }
         else{

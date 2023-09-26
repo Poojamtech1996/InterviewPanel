@@ -21,8 +21,8 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path='/' element={<Login/>}/>
-      <Route path="/dashboard" element = {<PrivateRoute><Navbar/></PrivateRoute>}></Route>
+      <Route path='/login' element={<Login/>}/>
+      <Route path="/" element = {<PrivateRoute><Navbar/></PrivateRoute>}></Route>
       <Route path="/dashboard/home" element = {<PrivateRoute><Navbar/><Home/></PrivateRoute>}></Route>
       <Route path="/dashboard/contact" element = {<PrivateRoute><Navbar/><Contact/></PrivateRoute>}></Route>
       <Route path="/dashboard/technology" element = {<PrivateRoute><Navbar/><Technology/></PrivateRoute>}></Route>

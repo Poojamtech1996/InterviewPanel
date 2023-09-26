@@ -12,8 +12,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useSelector, useDispatch } from 'react-redux';
+import { setDataRedux } from '../redux/userRedux';
 
 function User() {
+    const dispatch = useDispatch()
     const [data,setData] = useState([])
     const [user, setUser] = useState([])
     const [show, setShow] = useState(false);
@@ -26,6 +28,7 @@ function User() {
     const [currentPage , setCurrentPage] = useState("1")
     const [currentIndex,setCurrentIndex] = useState([1,2,3,4,5]);
     const userData = useSelector((state)=>state.userValue);
+    const fetchedData = useSelector((state)=>state.dataFetched);
     const handleClose = () => setShow(false);
     const handleShow = () => {
         setShow(true)
@@ -34,6 +37,7 @@ function User() {
     useEffect(() => {
         fetchUsers().then((resp) => {
             setData(resp.data)
+            dispatch(setDataRedux(resp.data))
             const numberOfPages =Math.ceil((resp.data.length)/5);
             setPaginationPages(numberOfPages);
             handlePageChange(resp.data,currentPage);
