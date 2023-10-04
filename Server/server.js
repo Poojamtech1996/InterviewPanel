@@ -13,10 +13,12 @@ app.use(cors());
 let technology = require("./API/TechnologyAPI");
 let user = require("./API/userAPI");
 let role = require("./API/roleAPI");
+let questions = require("./API/questionAPI");
 
 app.use("/technology", technology);
 app.use("/user",user);
 app.use("/role",role);
+app.use("/question",questions);
 
 mongoose.connect(process.env.URL).then((res) => {
     console.log('Database connected successfully');

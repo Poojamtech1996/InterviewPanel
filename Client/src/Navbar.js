@@ -39,11 +39,11 @@ function Navbar() {
             <li className="nav-item">
               <button className="nav-link" onClick={()=>navigate("/dashboard/technology")}>Technology</button>
             </li>
+            {userData.role==="Super Admin" || userData.role==="Admin" ? 
+            <>
             <li className="nav-item">
               <button className="nav-link" onClick={()=>navigate("/dashboard/qa")}>Q/A</button>
             </li>
-            {userData.role==="Super Admin" || userData.role==="Admin" ? 
-            <>
             <li className="nav-item">
               <button className="nav-link" onClick={()=>navigate("/dashboard/role")}>Role</button>
             </li> 
