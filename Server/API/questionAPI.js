@@ -9,7 +9,6 @@ app.post("/", async (request, response) => {
         response.send(fetchQuestions);
     }
     catch (error) {
-        console.log("Error Occured in User API")
         response.send("Error Ocurred")
     }
 })
@@ -17,8 +16,6 @@ app.post("/", async (request, response) => {
 app.post("/new", async (request, response) => {
     try {
         const { technology , question , answer } = request.body;
-        console.log("Gettingh" , technology , question , answer);
-        
         const newQuestionAnswer = new QuestionAnswer({
           technology,
           question,
