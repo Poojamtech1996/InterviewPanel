@@ -1,7 +1,9 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
+import React from 'react';
 import { fechtTechnologies } from '../hooks/technologyHook';
 import axios from 'axios';
+import Select from 'react-select';
+
 function Home() {
     const [technologies, setTechnologies] = useState([]);
     const [selectedTechnology, setSelectedTechnology] = useState('');
@@ -20,10 +22,14 @@ function Home() {
     };
     const handleAnswer = (event)=>{
         debugger;
-        setAnswer(event.target.value);
-        const filteredData  =  questionSelected.filter((item,index)=>item._id===event.target.value);
+        setAnswer(event.value);
+        const filteredData  =  questionSelected.filter((item,index)=>item.question===event.value);
         setShowAnswer(filteredData[0].answer);
     }
+    const options = questionSelected.length>0 ? questionSelected.map((item) => ({
+        value: item.question,
+        label: item.question,
+      })) : [{value : "Loading" , label : "Loading"}];
   
     return (
         <>
@@ -48,12 +54,22 @@ function Home() {
 
                     <div className="form-group" style={{ marginTop: '18%', width: 400 }}>
                         <label htmlFor="question" className='mb-2'><b>Questions</b></label>
-                        <select className="form-select" id="question"  value={answer} onChange={handleAnswer}>
+                        <Select
+        className="basic-single"
+        classNamePrefix="select th"
+        name="color"
+        options={options}
+        onChange={handleAnswer}
+      />
+
+                        
+                        
+                        {/* <select className="form-select" id="question"  value={answer} onChange={handleAnswer}>
                             <option value="reacttutorial">Select Question</option>
                          {questionSelected.length>0 ? 
                           questionSelected.map(item=>
                             <option key={item._id} value={item._id}>{item.question}</option>) : "Loading..."}
-                        </select>
+                        </select> */}
                     </div>
                 </div>
 
